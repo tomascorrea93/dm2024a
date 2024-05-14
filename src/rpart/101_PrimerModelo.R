@@ -6,10 +6,8 @@ require("data.table")
 require("rpart")
 require("rpart.plot")
 
-file = "K101_018"
-
 # Aqui se debe poner la carpeta de la materia de SU computadora local
-setwd("C:/Users/tomas/OneDrive/Documentos/ITBA/Mineria") # Establezco el Working Directory
+setwd("C:/Users/tomas/OneDrive/Documentos/ITBA/Data Mining") # Establezco el Working Directory
 
 # cargo el dataset
 dataset <- fread("./datasets/dataset_pequeno.csv")
@@ -24,12 +22,17 @@ modelo <- rpart(
         data = dtrain, # los datos donde voy a entrenar
         xval = 0,
         cp = -0.3, # esto significa no limitar la complejidad de los splits
-        minsplit = 850, # minima cantidad de registros para que se haga el split
-        minbucket = 250, # tamaño minimo de una hoja
-        maxdepth = 6
+        minsplit = 0, # minima cantidad de registros para que se haga el split
+        minbucket = 1, # tamaño minimo de una hoja
+        maxdepth = 3
 ) # profundidad maxima del arbol
 
 
+# grafico el arbol
+prp(modelo,
+        extra = 101, digits = -5,
+        branch = 1, type = 4, varlen = 0, faclen = 0
+)
 
 
 # aplico el modelo a los datos nuevos

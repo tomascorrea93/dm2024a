@@ -11,7 +11,7 @@ require("parallel")
 
 PARAM <- list()
 # reemplazar por las propias semillas
-PARAM$semillas <- c(102191, 200177, 410551, 552581, 892237)
+PARAM$semillas <- c(200003, 200009, 200017, 200023, 200029)
 
 #------------------------------------------------------------------------------
 # particionar agrega una columna llamada fold a un dataset
@@ -78,7 +78,7 @@ ArbolesMontecarlo <- function(semillas, param_basicos) {
     semillas, # paso el vector de semillas
     MoreArgs = list(param_basicos), # aqui paso el segundo parametro
     SIMPLIFY = FALSE,
-    mc.cores = 5 # en Windows este valor debe ser 1
+    mc.cores = 1 # en Windows este valor debe ser 1
   )
 
   ganancia_promedio <- mean(unlist(ganancias))
@@ -89,11 +89,11 @@ ArbolesMontecarlo <- function(semillas, param_basicos) {
 #------------------------------------------------------------------------------
 
 # Aqui se debe poner la carpeta de la computadora local
-setwd("~/buckets/b1/") # Establezco el Working Directory
+setwd("C:/Users/tomas/OneDrive/Documentos/ITBA/Data Mining") # Establezco el Working Directory
 # cargo los datos
 
 # cargo los datos
-dataset <- fread("~/datasets/dataset_pequeno.csv")
+dataset <- fread("./datasets/dataset_pequeno.csv")
 
 # trabajo solo con los datos con clase, es decir 202107
 dataset <- dataset[clase_ternaria != ""]
@@ -103,25 +103,29 @@ dataset <- dataset[clase_ternaria != ""]
 # HT  representa  Hiperparameter Tuning
 dir.create("./exp/", showWarnings = FALSE)
 dir.create("./exp/HT2020/", showWarnings = FALSE)
-archivo_salida <- "./exp/HT2020/gridsearch.txt"
+archivo_salida <- "./exp/HT2020/gridsearch_laultimabatalla.txt"
 
 # genero la data.table donde van los resultados del Grid Search
 tb_grid_search <- data.table( max_depth = integer(),
                               min_split = integer(),
+                              min_bucket = integer(),
+                              cp = numeric(),
                               ganancia_promedio = numeric() )
 
 
 # itero por los loops anidados para cada hiperparametro
 
-for (vmax_depth in c(4, 6, 8, 10, 12, 14)) {
+for (vmax_depth in c(6, 8, 7, 5)) {
   for (vmin_split in c(1000, 800, 600, 400, 200, 100, 50, 20, 10)) {
+    for (vminbucket in unique(as.integer(vmin_split*c(4/6,3/4,1/2,1/4,1/5)))){
+      for (xcp in c(-0.5, -0.25, -0.1, -0.8)){
     # notar como se agrega
 
     # vminsplit  minima cantidad de registros en un nodo para hacer el split
     param_basicos <- list(
-      "cp" = -0.5, # complejidad minima
+      "cp" = xcp, # complejidad minima
       "minsplit" = vmin_split,
-      "minbucket" = 5, # minima cantidad de registros en una hoja
+      "minbucket" = vminbucket, # minima cantidad de registros en una hoja
       "maxdepth" = vmax_depth
     ) # profundidad máxima del arbol
 
@@ -131,8 +135,10 @@ for (vmax_depth in c(4, 6, 8, 10, 12, 14)) {
     # agrego a la tabla
     tb_grid_search <- rbindlist( 
       list( tb_grid_search, 
-            list( vmax_depth, vmin_split, ganancia_promedio) ) )
+            list( vmax_depth, vmin_split, vminbucket, xcp, ganancia_promedio) ) )
 
+      }
+    }
   }
 
   # escribo la tabla a disco en cada vuelta del loop mas externo
@@ -142,3 +148,4 @@ for (vmax_depth in c(4, 6, 8, 10, 12, 14)) {
           file = archivo_salida,
           sep = "\t" )
 }
+
