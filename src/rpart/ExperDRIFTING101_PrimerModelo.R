@@ -15,11 +15,12 @@ dataset <- fread("./datasets/dataset_pequeno.csv")
 dtrain <- dataset[foto_mes == 202107] # defino donde voy a entrenar
 dapply <- dataset[foto_mes == 202109] # defino donde voy a aplicar el modelo
 
+dtrain2 <- dtrain[, COMISIONES_rank:=frankv(ccomisiones_otras)/.N] 
 # genero el modelo,  aqui se construye el arbol
 # quiero predecir clase_ternaria a partir de el resto de las variables
 modelo <- rpart(
-        formula = "clase_ternaria ~ .-mcaja_ahorro",
-        data = dtrain, # los datos donde voy a entrenar
+        formula = "clase_ternaria ~ .-ccomisiones_otras",
+        data = dtrain2, # los datos donde voy a entrenar
         xval = 0,
         cp = -0.8245172608, # esto significa no limitar la complejidad de los splits
         minsplit = 601, # minima cantidad de registros para que se haga el split
