@@ -212,9 +212,9 @@ dir.create("./exp/HT3220/", showWarnings = FALSE)
 setwd("./exp/HT3220/")
 
 
-archivo_log <- "HT322.txt"
-archivo_log_mejor <- "HT322_mejor.txt"
-archivo_BO <- "HT322.RDATA"
+archivo_log <- "165HT322.txt"
+archivo_log_mejor <- "165HT322_mejor.txt"
+archivo_BO <- "165HT322.RDATA"
 
 # leo si ya existe el log
 #  para retomar en caso que se se corte el programa
