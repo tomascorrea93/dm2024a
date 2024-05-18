@@ -206,15 +206,15 @@ dataset <- dataset[foto_mes==202107]
 # creo la carpeta donde va el experimento
 #  HT  representa  Hiperparameter Tuning
 dir.create("./exp/", showWarnings = FALSE)
-dir.create("./exp/HT3210/", showWarnings = FALSE)
+dir.create("./exp/HT3220/", showWarnings = FALSE)
 
 # Establezco el Working Directory DEL EXPERIMENTO
 setwd("./exp/HT3220/")
 
 
-archivo_log <- "HT322.txt"
-archivo_log_mejor <- "HT322_mejor.txt"
-archivo_BO <- "HT322.RDATA"
+archivo_log <- "LAPHT322.txt"
+archivo_log_mejor <- "LAPHT322_mejor.txt"
+archivo_BO <- "LAPHT322.RDATA"
 
 # leo si ya existe el log
 #  para retomar en caso que se se corte el programa
