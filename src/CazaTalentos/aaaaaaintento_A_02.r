@@ -67,20 +67,20 @@ Estrategia_A  <- function()
   #tiran los 100 jugadores es decir 1:100   90  tiros libres cada uno
   ids_juegan1  <- 1:100   #los jugadores que participan en la ronda,
 
-  planilla_cazatalentos[ ids_juegan1,  tiros1 := 50 ]  #registro en la planilla que tiran 90 tiros
+  planilla_cazatalentos[ ids_juegan1,  tiros1 := 60 ]  #registro en la planilla que tiran 90 tiros
 
   #Hago que tiren
-  resultado1  <- gimnasio_tirar( ids_juegan1, 50)
+  resultado1  <- gimnasio_tirar( ids_juegan1, 60)
   planilla_cazatalentos[ ids_juegan1,  aciertos1 := resultado1 ]  #registro en la planilla
 
   #Ronda 2 -------------------------------------------------------
   #A la mitad mejor la hago tirar 400 tiros cada uno
   #La mediana siempre parte a un conjunto en dos partes de igual cantidad
-  mediana  <- planilla_cazatalentos[ ids_juegan1, median(aciertos1) ]
-  ids_juegan2  <- planilla_cazatalentos[ ids_juegan1 ][ aciertos1 >= mediana, id ]
+  quantil25  <- planilla_cazatalentos[ ids_juegan1, quantile(aciertos1, 0.75) ]
+  ids_juegan2  <- planilla_cazatalentos[ ids_juegan1 ][ aciertos1 >= quantil25, id ]
 
-  planilla_cazatalentos[ ids_juegan2,  tiros2 := 200 ]  #registro en la planilla que tiran 400 tiros
-  resultado2  <- gimnasio_tirar( ids_juegan2, 200)
+  planilla_cazatalentos[ ids_juegan2,  tiros2 := 315 ]  #registro en la planilla que tiran 400 tiros
+  resultado2  <- gimnasio_tirar( ids_juegan2, 315)
   planilla_cazatalentos[ ids_juegan2,  aciertos2 := resultado2 ]  #registro en la planilla
 
   #Epilogo

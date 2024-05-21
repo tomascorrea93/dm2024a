@@ -55,7 +55,7 @@ gimnasio_veredicto  <- function( pid )
 #En la segunda ronda, a la mejor mitad de la anterior ronda se los hace tirar 400 tiros a cada uno
 #Se elige el mejor jugador de la segunda ronda
 
-set.seed( 200009 )
+set.seed( 981656517 )
 
 #inicializo el juego
 gimnasio_init()
@@ -68,20 +68,20 @@ planilla_cazatalentos  <- data.table( "id" = 1:100 )
 #tiran los 100 jugadores es decir 1:100  90 tiros libres cada uno
 ids_juegan1  <- 1:100   #los jugadores que participan en la ronda,
 
-planilla_cazatalentos[ ids_juegan1,  tiros1 := 90 ]  #registro en la planilla que tiran 90 tiros
+planilla_cazatalentos[ ids_juegan1,  tiros1 := 50 ]  #registro en la planilla que tiran 90 tiros
 
 #Hago que tiren
-resultado1  <- gimnasio_tirar( ids_juegan1, 90)
+resultado1  <- gimnasio_tirar( ids_juegan1, 50)
 planilla_cazatalentos[ ids_juegan1,  aciertos1 := resultado1 ]  #registro en la planilla
 
 
 #Ronda 2 -------------------------------------------------------
 #los mejores 40 jugadores tiran 400 tiros cada uno
-mediana  <- planilla_cazatalentos[ ids_juegan1, median(aciertos1) ]
-ids_juegan2  <- planilla_cazatalentos[ ids_juegan1 ][aciertos1 >= mediana, id ]
+quantil10  <- planilla_cazatalentos[ ids_juegan1, quantile(aciertos1, 0.9) ]
+ids_juegan2  <- planilla_cazatalentos[ ids_juegan1 ][aciertos1 >= quantil10, id ]
 
-planilla_cazatalentos[ ids_juegan2,  tiros2 := 400 ]  #registro en la planilla que tiran 400 tiros
-resultado2  <- gimnasio_tirar( ids_juegan2, 400)
+planilla_cazatalentos[ ids_juegan2,  tiros2 := 300 ]  #registro en la planilla que tiran 400 tiros
+resultado2  <- gimnasio_tirar( ids_juegan2, 300)
 planilla_cazatalentos[ ids_juegan2,  aciertos2 := resultado2 ]  #registro en la planilla
 
 #El cazatalentos toma una decision, elige al que mas aciertos tuvo en la ronda2
@@ -92,7 +92,7 @@ id_mejor  <-  planilla_cazatalentos[ pos_mejor, id ]
 #Termino el juego
 veredicto  <- gimnasio_veredicto( id_mejor )
 
-veredicto
+View(veredicto)
 
 
 #El veredicto da que la estrategia seguida por el cazatalentos fue exitosa para este caso

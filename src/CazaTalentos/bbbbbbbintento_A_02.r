@@ -49,50 +49,29 @@ gimnasio_veredicto  <- function( pid )
 }
 #------------------------------------------------------------------------------
 
-Estrategia_A  <- function()
-{
-  #Estrategia
-  #En la primer ronda se hace tirar 90 tiros libres a cada uno de los 100 jugadores ( se gastan 9000 tiros )
-  #Se eligen a la mejor mitad de primer ronda( se descarta a la otra mitad)
-  #En la segunda ronda, a la mejor mitad de la primera se los hace tirar 400 tiros a cada uno
-  #Se elige el mejor jugador de la segunda ronda
-
+Estrategia_B <- function() {
   gimnasio_init()
-
-  #Esta el la planilla del cazatalentos
-  #el id es el numero que tiene en la espalda cada jugador
-  planilla_cazatalentos  <- data.table( "id"= 1:100 )
-
-  #Ronda 1  ------------------------------------------------------
-  #tiran los 100 jugadores es decir 1:100   90  tiros libres cada uno
-  ids_juegan1  <- 1:100   #los jugadores que participan en la ronda,
-
-  planilla_cazatalentos[ ids_juegan1,  tiros1 := 50 ]  #registro en la planilla que tiran 90 tiros
-
-  #Hago que tiren
-  resultado1  <- gimnasio_tirar( ids_juegan1, 50)
-  planilla_cazatalentos[ ids_juegan1,  aciertos1 := resultado1 ]  #registro en la planilla
-
-  #Ronda 2 -------------------------------------------------------
-  #A la mitad mejor la hago tirar 400 tiros cada uno
-  #La mediana siempre parte a un conjunto en dos partes de igual cantidad
-  mediana  <- planilla_cazatalentos[ ids_juegan1, median(aciertos1) ]
-  ids_juegan2  <- planilla_cazatalentos[ ids_juegan1 ][ aciertos1 >= mediana, id ]
-
-  planilla_cazatalentos[ ids_juegan2,  tiros2 := 200 ]  #registro en la planilla que tiran 400 tiros
-  resultado2  <- gimnasio_tirar( ids_juegan2, 200)
-  planilla_cazatalentos[ ids_juegan2,  aciertos2 := resultado2 ]  #registro en la planilla
-
-  #Epilogo
-  #El cazatalentos toma una decision, elige al que mas aciertos tuvo en la ronda2
-  pos_mejor <-  planilla_cazatalentos[ , which.max(aciertos2) ]
-  id_mejor  <-  planilla_cazatalentos[ pos_mejor, id ]
-
-  #Finalmente, la hora de la verdadero_mejor
-  #Termino el juego
-  veredicto  <- gimnasio_veredicto( id_mejor )
+  planilla_cazatalentos <- data.table(ids_juegan1 = 1:100, aciertos = 0)  # Planilla
   
-  return( veredicto )
+  #Ronda 1: 20 tiros
+  resultado1  <- gimnasio_tirar(planilla_cazatalentos$ids_juegan1, 50)
+  planilla_cazatalentos <- planilla_cazatalentos[, aciertos := resultado1]
+  
+  #Ronda 2-4 - seleccion
+  for (ronda in 2:5) {
+    #ordeno x aciertos a los mejores 25
+    planilla_cazatalentos <- planilla_cazatalentos[order(-aciertos)[1:25]]
+    
+    # Tiros adicionales por ronda (20, 60, 140, 160)
+    tiros_ronda <- c(20, 60, 140, 180)[ronda - 1] 
+    resultados <- gimnasio_tirar(planilla_cazatalentos$ids_juegan1, tiros_ronda)
+    planilla_cazatalentos[, aciertos := aciertos + resultados]  # Acumular aciertos
+  }
+  
+id_mejor <- planilla_cazatalentos[which.max(aciertos), ids_juegan1]
+veredicto <- gimnasio_veredicto(id_mejor)
+return(veredicto)
+  
 }
 #------------------------------------------------------------------------------
 
@@ -106,7 +85,7 @@ for( experimento  in  1:10000 )
 {
   if( experimento %% 1000 == 0 )  cat( experimento, " ")  #desprolijo, pero es para saber por donde voy
 
-  veredicto  <- Estrategia_A()
+  veredicto  <- Estrategia_B()
   
   tabla_veredictos  <- rbind( tabla_veredictos, veredicto )
 }
