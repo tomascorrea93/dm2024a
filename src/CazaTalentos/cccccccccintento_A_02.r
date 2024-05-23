@@ -113,7 +113,7 @@ return(veredicto)
 
 #Aqui hago la Estimacion Montecarlo del porcentaje de aciertos que tiene la estrategia A
 
-set.seed( 200003 )  #debe ir una sola vez, ANTES de los experimentos
+set.seed( 65468 )  #debe ir una sola vez, ANTES de los experimentos
 
 tabla_veredictos  <- data.table(  tiros_total=integer(),  acierto=integer() )
 
