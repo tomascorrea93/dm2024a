@@ -13,8 +13,8 @@ envg <- env()
 
 envg$EXPENV <- list()
 envg$EXPENV$bucket_dir <- "~/buckets/b1"
-envg$EXPENV$exp_dir <- "~/buckets/b1/expw_RF_corrida 10/"
-envg$EXPENV$wf_dir <- "~/buckets/b1/flow_RF_corrida 10/"
+envg$EXPENV$exp_dir <- "~/buckets/b1/expw_RF_corrida_10/"
+envg$EXPENV$wf_dir <- "~/buckets/b1/flow_RF_corrida_10/"
 envg$EXPENV$repo_dir <- "~/dm2024a/"
 envg$EXPENV$datasets_dir <- "~/buckets/b1/datasets/"
 envg$EXPENV$arch_sem <- "mis_semillas.txt"
