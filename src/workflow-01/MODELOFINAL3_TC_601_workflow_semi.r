@@ -13,8 +13,8 @@ envg <- env()
 
 envg$EXPENV <- list()
 envg$EXPENV$bucket_dir <- "~/buckets/b1"
-envg$EXPENV$exp_dir <- "~/buckets/b1/expwMODELOFINAL1TC/"
-envg$EXPENV$wf_dir <- "~/buckets/b1/flowMODELOFINAL1TC/"
+envg$EXPENV$exp_dir <- "~/buckets/b1/expwMODELOFINAL3TC/"
+envg$EXPENV$wf_dir <- "~/buckets/b1/flowMODELOFINAL3TC/"
 envg$EXPENV$repo_dir <- "~/dm2024a/"
 envg$EXPENV$datasets_dir <- "~/buckets/b1/datasets/"
 envg$EXPENV$arch_sem <- "mis_semillas.txt"
@@ -175,8 +175,8 @@ FErf_attributes_base <- function( pinputexps, ratio, desvio)
   # parametros para que LightGBM se comporte como Random Forest
   param_local$lgb_param <- list(
     # parametros que se pueden cambiar
-    num_iterations = 50,
-    num_leaves  = 50,
+    num_iterations = 75,
+    num_leaves  = 75,
     min_data_in_leaf = 200,
     feature_fraction_bynode  = 0.1,
 
@@ -287,13 +287,13 @@ TS_strategy_base9 <- function( pinputexps )
 
   param_local$future <- c(202109)
   param_local$final_train <- c(202107, 202106, 202105, 202104, 202103, 202102, 202101,
-                               202012, 202011, 202010, 202009, 202008, 202007, 202004, 202003, 
+                               202012, 202011, 202010, 202009, 202008, 202007, 202005, 202004, 202003, 
                                202002, 202001, 201912, 201911, 201910, 201909, 201908, 
                                201907, 201906, 201905)
 
 
   param_local$train$training <- c(202105, 202104, 202103, 202102, 202101,
-                                  202012, 202011, 202010, 202009, 202008, 202007, 202004, 202003, 
+                                  202012, 202011, 202010, 202009, 202008, 202007, 202005, 202004, 202003, 
                                   202002, 202001, 201912, 201911, 201910, 201909, 201908, 
                                   201907, 201906, 201905, 201904, 201903)
   param_local$train$validation <- c(202106)
